@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Protein Synthesis Game</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Protein Synthesis</h1>
+            <div class="score-board">
+                <span>Phase: <span id="phase">Transcription</span></span>
+                <span>Score: <span id="score">0</span></span>
+            </div>
+            <a href="/" class="back-btn">Back to Menu</a>
+        </header>
+
+        <div class="game-area">
+            <div id="transcription-area">
+                <h3>Transcription: DNA to mRNA</h3>
+                <div class="dna-strand" id="dna-template"></div>
+                <div class="dna-strand" id="mrna-strand"></div>
+            </div>
+
+            <div id="translation-area" class="hidden">
+                <h3>Translation: mRNA to Protein</h3>
+                <div class="dna-strand" id="mrna-display"></div>
+                <div class="protein-chain" id="protein-chain"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div id="transcription-controls">
+                <p>Match RNA bases to the DNA template (A->U, T->A, C->G, G->C)</p>
+                <div class="nucleotide-pool">
+                    <div class="nucleotide A" draggable="true" data-base="A">A</div>
+                    <div class="nucleotide U" draggable="true" data-base="U">U</div>
+                    <div class="nucleotide C" draggable="true" data-base="C">C</div>
+                    <div class="nucleotide G" draggable="true" data-base="G">G</div>
+                </div>
+            </div>
+
+            <div id="translation-controls" class="hidden">
+                <p>Select the correct Amino Acid for the highlighted Codon</p>
+                <div class="amino-acid-pool" id="amino-pool">
+                    <!-- Amino acids will be populated here -->
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn">Start Synthesis</button>
+            <button id="next-phase-btn" class="btn hidden">Start Translation</button>
+            <button id="reset-btn" class="btn hidden">New Protein</button>
+        </div>
+
+        <div id="message-area" class="message hidden"></div>
+    </div>
+
+    <script th:src="@{/js/synthesis.js}"></script>
+</body>
+
+</html>

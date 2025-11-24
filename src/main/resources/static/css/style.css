@@ -1,0 +1,719 @@
+body {
+    font-family: 'Comic Neue', cursive;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.comic-book-container {
+    width: 90%;
+    max-width: 1000px;
+    background-color: white;
+    border: 4px solid #333;
+    box-shadow: 10px 10px 0px #333;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.comic-header {
+    text-align: center;
+    border-bottom: 4px solid #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+h1 {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    color: #ff4500;
+    text-shadow: 2px 2px 0px #333;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: #008b8b;
+    margin-top: 0;
+}
+
+.score-board {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.score-board span {
+    margin-left: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#global-timer,
+#stage-timer {
+    font-family: 'Courier New', monospace;
+    color: #ffcc00;
+    /* Gold color for time */
+}
+
+#stage-timer.low-time {
+    color: #ff4444;
+    /* Red warning */
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    border: 2px solid #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background-color: #333;
+    color: white;
+}
+
+/* Comic Pages */
+.comic-page {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.comic-page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel {
+    border: 3px solid #333;
+    padding: 20px;
+    background-color: #fff;
+    position: relative;
+}
+
+/* Page 1: Structure */
+.content-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.text-bubble {
+    flex: 1;
+    background: #fffacd;
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.text-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50px;
+    border-width: 20px 20px 0;
+    border-style: solid;
+    border-color: #333 transparent;
+    display: block;
+    width: 0;
+}
+
+.text-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 54px;
+    border-width: 16px 16px 0;
+    border-style: solid;
+    border-color: #fffacd transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+}
+
+.visual-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.dna-diagram {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background: #eee;
+    padding: 20px;
+    border: 2px dashed #333;
+    border-radius: 10px;
+}
+
+.base-pair span {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+}
+
+.base-pair .a {
+    background-color: #ff6b6b;
+}
+
+.base-pair .t {
+    background-color: #4ecdc4;
+}
+
+.base-pair .c {
+    background-color: #ffe66d;
+    color: black;
+}
+
+.base-pair .g {
+    background-color: #1a535c;
+}
+
+/* Page 2: Enzymes */
+.enzyme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.enzyme-card {
+    border: 2px solid #333;
+    padding: 10px;
+    text-align: center;
+    background-color: white;
+    transition: transform 0.2s;
+    box-shadow: 5px 5px 0px #ccc;
+}
+
+.enzyme-card:hover {
+    transform: scale(1.05);
+    box-shadow: 5px 5px 0px #333;
+}
+
+.enzyme-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* Page 3: Game */
+.game-panel {
+    min-height: 400px;
+}
+
+.step-indicator {
+    background-color: #ffeb3b;
+    padding: 10px;
+    border: 2px solid #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    min-height: 200px;
+}
+
+.dna-strand {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    min-height: 50px;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.nucleotide {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
+
+.nucleotide.A {
+    background-color: #ff6b6b;
+}
+
+.nucleotide.T {
+    background-color: #4ecdc4;
+}
+
+.nucleotide.C {
+    background-color: #ffe66d;
+    color: black;
+}
+
+.nucleotide.G {
+    background-color: #1a535c;
+}
+
+.nucleotide-pool {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.comic-btn {
+    background-color: #ff4500;
+    color: white;
+    border: 3px solid #333;
+    padding: 10px 20px;
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #333;
+    transition: all 0.1s;
+}
+
+.comic-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #333;
+}
+
+.comic-btn:active {
+    transform: translate(0, 0);
+    box-shadow: 0px 0px 0px #333;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.enzyme-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    text-align: center;
+}
+
+.enzyme-overlay.hidden {
+    display: none;
+}
+
+#active-enzyme-img {
+    width: 150px;
+    height: 150px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+#enzyme-message {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Enzyme Toolbox */
+.toolbox {
+    background-color: #fff;
+    border: 3px solid #333;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.toolbox h3 {
+    font-family: 'Bangers', cursive;
+    color: #333;
+    margin-top: 0;
+}
+
+.toolbox-grid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.tool-item {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 80px;
+    text-align: center;
+}
+
+.tool-item:hover {
+    border-color: #333;
+    transform: translateY(-5px);
+}
+
+.tool-item.selected {
+    border-color: #ff4500;
+    background-color: #fff0e6;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.tool-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 5px;
+}
+
+.tool-item span {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.nucleotide-pool.hidden {
+    display: none;
+}
+
+/* Double Helix & Bonds */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    /* No gap initially, controlled by rows */
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.strand-row {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    position: relative;
+    transition: all 1s ease-in-out;
+}
+
+.middle-row {
+    min-height: 40px;
+    /* Initial height for bonds */
+    background-color: rgba(0, 0, 0, 0.02);
+    /* Subtle highlight */
+}
+
+.middle-row.unzipped {
+    min-height: 140px;
+    /* Expands to fit 2 new strands + gap */
+    flex-direction: column;
+    /* Stacks the new strands */
+    justify-content: space-between;
+    background-color: transparent;
+}
+
+.strand-label {
+    width: 120px;
+    font-family: 'Bangers', cursive;
+    color: #555;
+    font-size: 1rem;
+    text-align: right;
+    padding-right: 15px;
+    flex-shrink: 0;
+}
+
+.nucleotide-container {
+    display: flex;
+    flex-grow: 1;
+    gap: 5px;
+    /* Consistent gap between nucleotides */
+}
+
+/* Fixed Width for Alignment */
+.nucleotide,
+.bond-placeholder {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 5px;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.nucleotide {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    transition: transform 0.3s;
+}
+
+.bond-placeholder {
+    height: 40px;
+    /* Shorter for bonds */
+    font-family: monospace;
+    color: #999;
+    font-size: 1.2rem;
+    border: none;
+    background: transparent;
+}
+
+/* New Strands Container (created dynamically inside middle row) */
+.new-strand-row {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    padding-left: 120px;
+    /* Match label width offset */
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.new-strand-row.visible {
+    opacity: 1;
+}
+
+.okazaki-fragment {
+    border: 2px solid orange;
+    border-radius: 5px;
+    padding: 2px;
+    margin-right: 5px;
+}
+
+/* Nucleotide Colors */
+.nucleotide.A {
+    background-color: #ffcccc;
+    border-color: #ff9999;
+    color: #333;
+}
+
+.nucleotide.T {
+    background-color: #ccffcc;
+    border-color: #99ff99;
+    color: #333;
+}
+
+.nucleotide.C {
+    background-color: #ccccff;
+    border-color: #9999ff;
+    color: #333;
+}
+
+.nucleotide.G {
+    background-color: #ffffcc;
+    border-color: #ffff99;
+    color: #333;
+}
+
+.nucleotide.RNA {
+    background-color: #ffd699;
+    border-color: #ffb84d;
+    color: #333;
+}
+
+/* Primer */
+
+.slot {
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+}
+
+/* View Management */
+.hidden-row {
+    display: none !important;
+}
+
+/* Highlighting */
+.current-target {
+    box-shadow: 0 0 10px 2px #ffeb3b;
+    border-color: #ffeb3b !important;
+    transform: scale(1.1);
+    z-index: 10;
+}
+
+/* Spacers for Alignment */
+.spacer {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    visibility: hidden;
+    /* Invisible but takes up space */
+    margin-right: 5px;
+    /* Match gap */
+    transition: width 1s ease, margin 1s ease;
+}
+
+/* Ligase Animation */
+.primer {
+    transition: opacity 1s ease, width 1s ease, margin 1s ease, background-color 1s ease;
+}
+
+.gluing-out {
+    opacity: 0;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* Final State Separation */
+.game-area.final-state {
+    gap: 50px;
+    /* Increase gap between strands */
+    transition: gap 1s ease;
+}
+
+.game-area.final-state .middle-row {
+    min-height: 100px;
+    /* Push them apart */
+    transition: min-height 1s ease;
+}
+
+/* Visual Guidance */
+.highlight-toolbox {
+    box-shadow: 0 0 25px 8px rgba(255, 204, 0, 0.9);
+    /* Strong golden glow */
+    transform: scale(1.05);
+    z-index: 100;
+    position: relative;
+    border: 3px solid #ffcc00;
+    transition: all 0.3s ease;
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+@keyframes pulse-glow {
+    from {
+        box-shadow: 0 0 20px 5px rgba(255, 204, 0, 0.7);
+        transform: scale(1.02);
+    }
+
+    to {
+        box-shadow: 0 0 35px 15px rgba(255, 204, 0, 1);
+        transform: scale(1.08);
+    }
+}
+
+.game-area.dimmed {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(0.6);
+    transition: all 0.5s ease;
+}
+
+/* Final 7-Row Layout */
+.final-bond-row {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding-left: 120px;
+    /* Match label width offset */
+    gap: 5px;
+    /* Match nucleotide gap */
+}
+
+.final-bond-row .bond-placeholder {
+    width: 50px;
+    /* Match nucleotide width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.separator-row {
+    height: 60px;
+    background-color: transparent;
+    border-top: 2px dashed #ccc;
+    border-bottom: 2px dashed #ccc;
+    margin: 10px 0;
+    opacity: 0.5;
+    /* Ensure it spans the full width but doesn't disrupt the grid flow visually */
+    width: 100%;
+    /* Center the dashed lines if needed, or just keep as a block separator */
+}
+
+.game-area.final-state {
+    gap: 5px;
+    /* Tighten gap for the grid look */
+    align-items: flex-start;
+    /* Ensure rows start from left */
+}

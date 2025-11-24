@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DNA Games</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DNA Educational Games</h1>
+            <p>Explore the building blocks of life</p>
+        </header>
+        
+        <main>
+            <div class="game-card">
+                <h2>DNA Structure & Replication</h2>
+                <p>Learn how DNA copies itself and understand the base pairing rules.</p>
+                <a href="/replication" class="btn">Play Replication</a>
+            </div>
+            
+            <div class="game-card">
+                <h2>Protein Synthesis</h2>
+                <p>Transcribe DNA to mRNA and translate it into proteins.</p>
+                <a href="/synthesis" class="btn">Play Synthesis</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

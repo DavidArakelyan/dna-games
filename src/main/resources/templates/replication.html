@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DNA Replication Game</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="comic-book-container">
+        <header class="comic-header">
+            <h1>The Adventures of DNA Replication!</h1>
+            <div class="score-board">
+                <span>Score: <span id="score">0</span></span>
+                <span>Mistakes: <span id="mistakes">0</span></span>
+                <span>Time: <span id="global-timer">00:00</span></span>
+                <span>Stage: <span id="stage-timer">15</span>s</span>
+            </div>
+            <a href="/" class="back-btn">Back to Menu</a>
+        </header>
+
+        <div class="comic-pages">
+            <!-- Page 1: DNA Structure Intro -->
+            <div class="comic-page active" id="page-1">
+                <div class="panel">
+                    <h2>The Blueprint of Life</h2>
+                    <div class="content-row">
+                        <div class="text-bubble">
+                            <p>Welcome, cadet! Before we replicate, we must understand the structure!</p>
+                            <p>DNA is a double helix, like a twisted ladder.</p>
+                            <ul>
+                                <li><strong>Backbone:</strong> Sugar & Phosphate</li>
+                                <li><strong>Rungs:</strong> Nitrogenous Bases (A, T, C, G)</li>
+                            </ul>
+                            <p>Remember: <strong>A</strong> pairs with <strong>T</strong>, and <strong>C</strong> pairs
+                                with <strong>G</strong>!</p>
+                        </div>
+                        <div class="visual-container">
+                            <!-- Placeholder for DNA Structure Diagram -->
+                            <div class="dna-diagram">
+                                <div class="backbone left">5'</div>
+                                <div class="base-pair"><span class="a">A</span>--<span class="t">T</span></div>
+                                <div class="base-pair"><span class="c">C</span>--<span class="g">G</span></div>
+                                <div class="base-pair"><span class="t">T</span>--<span class="a">A</span></div>
+                                <div class="base-pair"><span class="g">G</span>--<span class="c">C</span></div>
+                                <div class="backbone right">3'</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="comic-btn next-btn" onclick="nextPage(2)">Meet the Crew &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Page 2: Meet the Enzymes -->
+            <div class="comic-page" id="page-2">
+                <div class="panel">
+                    <h2>Meet the Replication Crew!</h2>
+                    <div class="enzyme-grid">
+                        <div class="enzyme-card">
+                            <img th:src="@{/images/helicase.png}" alt="Helicase" class="enzyme-img">
+                            <h3>Helicase</h3>
+                            <p>"The Unzipper!" I break the hydrogen bonds to separate the strands.</p>
+                        </div>
+                        <div class="enzyme-card">
+                            <img th:src="@{/images/primase.png}" alt="Primase" class="enzyme-img">
+                            <h3>Primase</h3>
+                            <p>"The Starter!" I lay down RNA primers so the builder knows where to start.</p>
+                        </div>
+                        <div class="enzyme-card">
+                            <img th:src="@{/images/polymerase.png}" alt="Polymerase" class="enzyme-img">
+                            <h3>DNA Polymerase</h3>
+                            <p>"The Builder!" I add new nucleotides to build the new strand.</p>
+                        </div>
+                        <div class="enzyme-card">
+                            <img th:src="@{/images/ligase.png}" alt="Ligase" class="enzyme-img">
+                            <h3>Ligase</h3>
+                            <p>"The Gluer!" I seal the gaps between fragments.</p>
+                        </div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="comic-btn prev-btn" onclick="prevPage(1)">&larr; Back</button>
+                        <button class="comic-btn next-btn" onclick="nextPage(3)">Start Replication! &rarr;</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 3: The Game -->
+            <div class="comic-page" id="page-3">
+                <div class="panel game-panel">
+                    <h2>Mission: Replicate!</h2>
+
+                    <div class="step-indicator">
+                        <span id="step-text">Step 1: Unzip the DNA!</span>
+                    </div>
+
+                    <div class="game-area" id="game-container">
+                        <!-- Row 1: Leading Strand Template (Top) -->
+                        <div class="strand-row" id="row-leading-template">
+                            <div class="strand-label">Leading (3'-5')</div>
+                            <div class="nucleotide-container" id="leading-template"></div>
+                        </div>
+
+                        <!-- Row 2: The "Gap" / Bonds / New Strands -->
+                        <!-- Initially contains Bonds. Splits into Leading New + Lagging New -->
+                        <div class="strand-row middle-row" id="row-middle">
+                            <div class="strand-label"></div> <!-- Empty label for alignment -->
+                            <div class="nucleotide-container" id="middle-container"></div>
+                        </div>
+
+                        <!-- Row 3: Lagging Strand Template (Bottom) -->
+                        <div class="strand-row" id="row-lagging-template">
+                            <div class="strand-label">Lagging (5'-3')</div>
+                            <div class="nucleotide-container" id="lagging-template"></div>
+                        </div>
+
+                        <!-- Enzyme Action Overlay -->
+                        <div id="enzyme-action-area" class="enzyme-overlay hidden">
+                            <img id="active-enzyme-img" src="" alt="Active Enzyme">
+                            <p id="enzyme-message"></p>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <!-- Enzyme Toolbox -->
+                        <div id="enzyme-toolbox" class="toolbox">
+                            <h3>Enzyme Toolbox</h3>
+                            <p>Select the right enzymes for the job!</p>
+                            <div class="toolbox-grid">
+                                <div class="tool-item" data-enzyme="Helicase" onclick="toggleEnzyme(this)">
+                                    <img th:src="@{/images/helicase.png}" alt="Helicase">
+                                    <span>Helicase</span>
+                                </div>
+                                <div class="tool-item" data-enzyme="Primase" onclick="toggleEnzyme(this)">
+                                    <img th:src="@{/images/primase.png}" alt="Primase">
+                                    <span>Primase</span>
+                                </div>
+                                <div class="tool-item" data-enzyme="Polymerase" onclick="toggleEnzyme(this)">
+                                    <img th:src="@{/images/polymerase.png}" alt="Polymerase">
+                                    <span>Polymerase</span>
+                                </div>
+                                <div class="tool-item" data-enzyme="Ligase" onclick="toggleEnzyme(this)">
+                                    <img th:src="@{/images/ligase.png}" alt="Ligase">
+                                    <span>Ligase</span>
+                                </div>
+                            </div>
+                            <button id="deploy-btn" class="comic-btn action-btn" onclick="deployEnzymes()">Deploy
+                                Selected!</button>
+                        </div>
+
+                        <!-- Nucleotide Pool (Hidden initially) -->
+                        <div class="nucleotide-pool hidden" id="nucleotide-pool">
+                            <div class="nucleotide A" draggable="true" data-base="A">A</div>
+                            <div class="nucleotide T" draggable="true" data-base="T">T</div>
+                            <div class="nucleotide C" draggable="true" data-base="C">C</div>
+                            <div class="nucleotide G" draggable="true" data-base="G">G</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="comic-btn prev-btn" onclick="prevPage(2)">&larr; Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/replication.js}"></script>
+</body>
+
+</html>
