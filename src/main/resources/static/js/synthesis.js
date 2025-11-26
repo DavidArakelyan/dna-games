@@ -486,30 +486,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function performPeptideBondAndShift() {
-        // 1. Peptide Bond Formation
-        // If there is a tRNA in P-Site, its AA chain moves to A-Site tRNA.
-        // For visualization: We just add the NEW AA to the main protein chain display.
-        // And visually detach the AA from the P-Site tRNA.
-
+        // Check for STOP codon
         if (state.aSite.aa === 'STOP') {
             finishTranslation();
             return;
         }
 
-        // Add to Protein Chain Display
-        const bead = document.createElement('div');
-        bead.className = 'amino-acid-ball linked';
-        bead.textContent = state.aSite.aa;
-        bead.style.backgroundColor = getAminoColor(state.aSite.aa);
-
-        if (proteinChain.children.length > 0) {
-            const bond = document.createElement('div');
-            bond.className = 'peptide-bond';
-            proteinChain.appendChild(bond);
-        }
-        proteinChain.appendChild(bead);
-
-        // 2. Shift Ribosome (Move A -> P, P -> E, E -> Exit)
+        // Shift Ribosome (Move A -> P, P -> E, E -> Exit)
+        // Amino acid will be added to chain AFTER it moves to P-site
         setTimeout(() => {
             shiftRibosome();
         }, 1000);
@@ -539,6 +523,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const aContent = siteA.firstElementChild;
         if (aContent) {
             siteP.appendChild(aContent);
+
+            // NOW add amino acid to protein chain (after it's in P-site)
+            if (state.aSite) {
+                const bead = document.createElement('div');
+                bead.className = 'amino-acid-ball linked';
+                bead.textContent = state.aSite.aa;
+                bead.style.backgroundColor = getAminoColor(state.aSite.aa);
+
+                if (proteinChain.children.length > 0) {
+                    const bond = document.createElement('div');
+                    bond.className = 'peptide-bond';
+                    proteinChain.appendChild(bond);
+                }
+                proteinChain.appendChild(bead);
+            }
         }
 
         // Update State
