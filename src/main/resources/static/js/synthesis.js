@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dnaTemplate.innerHTML = '';
         mrnaStrand.innerHTML = '';
         currentMrna = [];
-        nextPhaseBtn.classList.add('hidden');
+        // nextPhaseBtn is now always visible
+        // nextPhaseBtn.classList.add('hidden');
 
         // Generate DNA Sequence (Length 15 for 5 codons)
         // Ensure it starts with TAC (Met) for valid translation start
@@ -225,6 +226,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Transition Animation ---
     window.goToTranslation = function () {
+        // Auto-complete transcription if not finished
+        const slots = document.querySelectorAll('#mrna-strand .nucleotide.slot');
+        slots.forEach(slot => {
+            const base = slot.dataset.target;
+            const index = parseInt(slot.dataset.index);
+
+            // Visually fill
+            slot.textContent = base;
+            slot.className = `nucleotide ${base} filled`;
+            slot.classList.remove('slot', 'current-target');
+
+            // Update logic
+            currentMrna[index] = base;
+        });
+
+        // Hide Polymerase
+        document.getElementById('rna-polymerase').classList.add('hidden');
+
         // 1. Create a visual clone of the mRNA strand
         const mrnaClone = document.createElement('div');
         mrnaClone.className = 'mrna-transition';
