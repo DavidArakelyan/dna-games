@@ -316,47 +316,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function alignMrnaToCenter(codonIndex) {
-        // We want the active codon to be in the MIDDLE of the Ribosome.
-        // The Ribosome container is centered.
-        // The mrna-track is centered.
-        // We need to shift mrna-display so that codon[codonIndex] is at the center of mrna-track.
+        // We want the active codon to be centered in the mRNA track viewport
+        // Use scrolling instead of transform for better UX
 
-        const codonWidth = 130; // Approx width of a codon group (40*3 + gaps)
-        // If we want codonIndex to be at center:
-        // We need to shift left by codonIndex * width.
-        // Plus, we need to center the codon itself (width/2).
-
-        // Let's assume the mrna-display is centered in the track initially.
-        // If we translateX(0), the start of the strand is at the center? No, usually flex-start or center depending on CSS.
-        // CSS says #mrna-display { display: flex; } inside .mrna-track { justify-content: center; }
-        // So initially, the WHOLE strand is centered.
-
-        // We want a SPECIFIC child to be centered.
-        // Offset = (TotalWidth / 2) - (ChildPosition + ChildWidth / 2)
-        // But since we are just shifting the whole strip...
-
-        // Let's simplify:
-        // Shift = - (codonIndex * codonWidth) + (Some Constant to Center)
-        // If index 0: Shift should center the first block.
-        // If index 1: Shift left by 1 block width.
-
-        // Let's try calculating relative to the middle of the sequence length?
-        // No, easier to just brute force the offset.
-        // If we want index 0 to be center:
-        // The strand starts at center minus half its width?
-        // But wait, the strip grows to the right.
-        // So we need to push it right by (ContainerWidth/2) - (CodonWidth/2).
-        // Let's approximate.
-
-        const initialOffset = 150; // Push right to center first codon
-        const offset = initialOffset - (codonIndex * codonWidth);
-        mrnaDisplay.style.transform = `translateX(${offset}px)`;
-
-        // Highlight active codon
-        document.querySelectorAll('.codon-group').forEach(g => g.classList.remove('active'));
+        const mrnaTrack = document.querySelector('.mrna-track');
         const groups = document.querySelectorAll('.codon-group');
+
         if (groups[codonIndex]) {
-            groups[codonIndex].classList.add('active');
+            const targetCodon = groups[codonIndex];
+            const trackWidth = mrnaTrack.offsetWidth;
+            const codonLeft = targetCodon.offsetLeft;
+            const codonWidth = targetCodon.offsetWidth;
+
+            // Calculate scroll position to center the codon
+            const scrollPos = codonLeft - (trackWidth / 2) + (codonWidth / 2);
+
+            mrnaTrack.scrollLeft = scrollPos;
+
+            // Highlight active codon
+            groups.forEach(g => g.classList.remove('active'));
+            targetCodon.classList.add('active');
         }
     }
 
@@ -486,30 +465,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function performPeptideBondAndShift() {
-        // 1. Peptide Bond Formation
-        // If there is a tRNA in P-Site, its AA chain moves to A-Site tRNA.
-        // For visualization: We just add the NEW AA to the main protein chain display.
-        // And visually detach the AA from the P-Site tRNA.
-
+        // Check for STOP codon
         if (state.aSite.aa === 'STOP') {
             finishTranslation();
             return;
         }
 
-        // Add to Protein Chain Display
-        const bead = document.createElement('div');
-        bead.className = 'amino-acid-ball linked';
-        bead.textContent = state.aSite.aa;
-        bead.style.backgroundColor = getAminoColor(state.aSite.aa);
-
-        if (proteinChain.children.length > 0) {
-            const bond = document.createElement('div');
-            bond.className = 'peptide-bond';
-            proteinChain.appendChild(bond);
-        }
-        proteinChain.appendChild(bead);
-
-        // 2. Shift Ribosome (Move A -> P, P -> E, E -> Exit)
+        // Shift Ribosome (Move A -> P, P -> E, E -> Exit)
+        // Amino acid will be added to chain AFTER it moves to P-site
         setTimeout(() => {
             shiftRibosome();
         }, 1000);
@@ -539,6 +502,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const aContent = siteA.firstElementChild;
         if (aContent) {
             siteP.appendChild(aContent);
+
+            // NOW add amino acid to protein chain (after it's in P-site)
+            if (state.aSite) {
+                const bead = document.createElement('div');
+                bead.className = 'amino-acid-ball linked';
+                bead.textContent = state.aSite.aa;
+                bead.style.backgroundColor = getAminoColor(state.aSite.aa);
+
+                if (proteinChain.children.length > 0) {
+                    const bond = document.createElement('div');
+                    bond.className = 'peptide-bond';
+                    proteinChain.appendChild(bond);
+                }
+                proteinChain.appendChild(bead);
+            }
         }
 
         // Update State
