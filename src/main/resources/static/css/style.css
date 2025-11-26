@@ -768,8 +768,8 @@ h2 {
 }
 
 .ribosome-large {
-    width: 350px;
-    height: 150px;
+    width: 400px;
+    height: 180px;
     background-color: #ffb6c1;
     /* LightPink */
     border: 4px solid #c71585;
@@ -785,6 +785,8 @@ h2 {
     box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
     position: relative;
     padding-top: 20px;
+    margin-bottom: 10px;
+    /* Move it higher relative to track */
 }
 
 .ribosome-sites {
