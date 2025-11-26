@@ -991,12 +991,12 @@ h2 {
 }
 
 .codon-group.active {
-    border-color: #ff0000;
-    background-color: #ffff00;
-    /* Bright Yellow */
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-    z-index: 10;
+    background-color: #90ee90;
+    /* Light green */
+    border: 3px solid #008000;
+    /* Green */
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.5);
 }
 
 /* Protein Chain */
