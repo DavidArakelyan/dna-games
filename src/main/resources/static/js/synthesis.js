@@ -157,18 +157,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Move RNA Polymerase
             const poly = document.getElementById('rna-polymerase');
 
-            const labelWidth = 120; // .strand-label width
-            const slotWidth = 49; // 40 + 4 + 5
-            const startOffset = labelWidth + 20; // Adjusted padding to align better
+            // Use offsetLeft to get the actual position of the slot
+            const slotLeft = slot.offsetLeft;
+            const slotWidth = slot.offsetWidth;
+            const polyWidth = 80; // RNA Polymerase bubble width
 
-            const leftPos = startOffset + (index * slotWidth);
+            // Center the polymerase bubble over the slot
+            const polyLeft = slotLeft + (slotWidth / 2) - (polyWidth / 2);
 
-            // Center the bubble (width 80px) over the slot (width 44px)
-            // We want the center of the bubble to match the center of the slot.
-            // Slot Center = leftPos + (slotWidth / 2)
-            // Bubble Left = Slot Center - (BubbleWidth / 2)
-
-            poly.style.left = `${leftPos - 15}px`; // Kept similar but adjusted startOffset
+            poly.style.left = `${polyLeft}px`;
         }
     }
 
@@ -301,9 +298,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         populateTRNAPool();
 
-        // Hint Button Logic
+        // Hint Button Logic - Ensure Codon Wheel starts hidden
         const hintBtn = document.getElementById('hint-btn');
         const codonWheel = document.getElementById('codon-wheel');
+
+        // Ensure it starts hidden
+        codonWheel.classList.add('hidden');
 
         // Remove existing listener to avoid duplicates if restarted
         const newBtn = hintBtn.cloneNode(true);
