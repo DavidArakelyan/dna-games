@@ -51,28 +51,24 @@ document.addEventListener('DOMContentLoaded', () => {
         aSite: null  // { aa: 'Phe', anticodon: 'AAA' }
     };
 
-    // Amino Acid Data
+    // Amino Acid Data - Complete Standard Genetic Code (64 codons)
     const codonTable = {
-        'AUG': 'Met', 'UUU': 'Phe', 'UUC': 'Phe',
-        'UUA': 'Leu', 'UUG': 'Leu', 'CUU': 'Leu',
-        'UCU': 'Ser', 'UCC': 'Ser', 'UCA': 'Ser',
-        'UAA': 'STOP', 'UAG': 'STOP', 'UGA': 'STOP',
-        'GCA': 'Ala', 'GCC': 'Ala', 'GCG': 'Ala', 'GCU': 'Ala',
-        'AGA': 'Arg', 'AGG': 'Arg', 'CGA': 'Arg', 'CGC': 'Arg', 'CGG': 'Arg', 'CGU': 'Arg',
-        'AAC': 'Asn', 'AAU': 'Asn',
-        'GAC': 'Asp', 'GAU': 'Asp',
-        'UGC': 'Cys', 'UGU': 'Cys',
-        'CAA': 'Gln', 'CAG': 'Gln',
-        'GAA': 'Glu', 'GAG': 'Glu',
-        'GGA': 'Gly', 'GGC': 'Gly', 'GGG': 'Gly', 'GGU': 'Gly',
-        'CAC': 'His', 'CAU': 'His',
-        'AUA': 'Ile', 'AUC': 'Ile', 'AUU': 'Ile',
-        'AAA': 'Lys', 'AAG': 'Lys',
-        'CCA': 'Pro', 'CCC': 'Pro', 'CCG': 'Pro', 'CCU': 'Pro',
-        'ACA': 'Thr', 'ACC': 'Thr', 'ACG': 'Thr', 'ACU': 'Thr',
-        'UGG': 'Trp',
-        'UAC': 'Tyr', 'UAU': 'Tyr',
-        'GUA': 'Val', 'GUC': 'Val', 'GUG': 'Val', 'GUU': 'Val'
+        'UUU': 'Phe', 'UUC': 'Phe', 'UUA': 'Leu', 'UUG': 'Leu',
+        'UCU': 'Ser', 'UCC': 'Ser', 'UCA': 'Ser', 'UCG': 'Ser',
+        'UAU': 'Tyr', 'UAC': 'Tyr', 'UAA': 'STOP', 'UAG': 'STOP',
+        'UGU': 'Cys', 'UGC': 'Cys', 'UGA': 'STOP', 'UGG': 'Trp',
+        'CUU': 'Leu', 'CUC': 'Leu', 'CUA': 'Leu', 'CUG': 'Leu',
+        'CCU': 'Pro', 'CCC': 'Pro', 'CCA': 'Pro', 'CCG': 'Pro',
+        'CAU': 'His', 'CAC': 'His', 'CAA': 'Gln', 'CAG': 'Gln',
+        'CGU': 'Arg', 'CGC': 'Arg', 'CGA': 'Arg', 'CGG': 'Arg',
+        'AUU': 'Ile', 'AUC': 'Ile', 'AUA': 'Ile', 'AUG': 'Met',
+        'ACU': 'Thr', 'ACC': 'Thr', 'ACA': 'Thr', 'ACG': 'Thr',
+        'AAU': 'Asn', 'AAC': 'Asn', 'AAA': 'Lys', 'AAG': 'Lys',
+        'AGU': 'Ser', 'AGC': 'Ser', 'AGA': 'Arg', 'AGG': 'Arg',
+        'GUU': 'Val', 'GUC': 'Val', 'GUA': 'Val', 'GUG': 'Val',
+        'GCU': 'Ala', 'GCC': 'Ala', 'GCA': 'Ala', 'GCG': 'Ala',
+        'GAU': 'Asp', 'GAC': 'Asp', 'GAA': 'Glu', 'GAG': 'Glu',
+        'GGU': 'Gly', 'GGC': 'Gly', 'GGA': 'Gly', 'GGG': 'Gly'
     };
 
     // --- Transcription Logic ---
