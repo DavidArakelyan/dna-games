@@ -87,12 +87,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // nextPhaseBtn is now always visible
         // nextPhaseBtn.classList.add('hidden');
 
-        // Generate DNA Sequence (Length 15 for 5 codons)
+        // Generate DNA Sequence (Length 18 for 6 codons)
         // Ensure it starts with TAC (Met) for valid translation start
         const startCodon = ['T', 'A', 'C'];
         const remainingLength = 12; // 4 more codons
         const randomPart = generateRandomSequence(remainingLength);
-        currentDna = [...startCodon, ...randomPart];
+
+        // Add Stop Codon at the end (ATT -> UAA, ATC -> UAG, ACT -> UGA)
+        const stopCodons = [['A', 'T', 'T'], ['A', 'T', 'C'], ['A', 'C', 'T']];
+        const stopCodon = stopCodons[Math.floor(Math.random() * stopCodons.length)];
+
+        currentDna = [...startCodon, ...randomPart, ...stopCodon];
 
         renderDna(currentDna);
         prepareMrnaSlots(currentDna.length);
@@ -336,27 +341,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function alignMrnaToCenter(codonIndex) {
         // We want the active codon to be centered in the mRNA track viewport
-        const mrnaTrack = document.querySelector('.mrna-track');
+        // Since we reverted to full visibility, we use transform to slide the track
+        const mrnaDisplay = document.getElementById('mrna-display');
         const groups = document.querySelectorAll('.codon-group');
 
         if (groups[codonIndex]) {
-            const targetCodon = groups[codonIndex];
-            const trackWidth = mrnaTrack.offsetWidth;
-            const codonLeft = targetCodon.offsetLeft;
-            const codonWidth = targetCodon.offsetWidth;
+            const codonWidth = 130; // Approx width
+            // We want to shift so that the target codon is at the center
+            // Initial offset to center the first codon (index 0)
+            const initialOffset = 150;
+            const offset = initialOffset - (codonIndex * codonWidth);
 
-            // Calculate scroll position to center the codon
-            // We want the center of the codon to align with the center of the track
-            const scrollPos = codonLeft - (trackWidth / 2) + (codonWidth / 2);
-
-            mrnaTrack.scrollTo({
-                left: scrollPos,
-                behavior: 'smooth'
-            });
+            mrnaDisplay.style.transform = `translateX(${offset}px)`;
 
             // Highlight active codon
             groups.forEach(g => g.classList.remove('active'));
-            targetCodon.classList.add('active');
+            groups[codonIndex].classList.add('active');
         }
     }
 
@@ -368,9 +368,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const neededAminos = [];
         for (let i = 0; i < currentMrna.length; i += 3) {
             const codon = currentMrna.slice(i, i + 3).join('');
-            const aa = codonTable[codon] || '?';
+            const aa = codonTable[codon];
+            if (!aa) {
+                console.warn(`Unknown codon: ${codon} (position ${i}/${currentMrna.length})`);
+            }
             const anticodon = getAnticodon(codon);
-            neededAminos.push({ aa, anticodon });
+            neededAminos.push({ aa: aa || '?', anticodon });
         }
 
         // 2. Generate Abundant Distractors (Random AAs with Random Valid Anticodons)
@@ -439,9 +442,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getAminoColor(aa) {
         const colors = {
-            'Met': '#FFA500', 'Phe': '#32CD32', 'Leu': '#1E90FF',
-            'Ser': '#FF69B4', 'STOP': '#FF0000', 'Ala': '#FFFF00',
-            'Gly': '#00FFFF', 'Val': '#FF00FF'
+            'Met': '#FFA500', // Orange
+            'Phe': '#32CD32', // LimeGreen
+            'Leu': '#1E90FF', // DodgerBlue
+            'Ser': '#FF69B4', // HotPink
+            'Pro': '#FFD700', // Gold
+            'Val': '#FF00FF', // Magenta
+            'Ala': '#FFFF00', // Yellow
+            'Gly': '#00FFFF', // Cyan
+            'Trp': '#4B0082', // Indigo
+            'Cys': '#008000', // Green
+            'Tyr': '#FA8072', // Salmon
+            'His': '#ADD8E6', // LightBlue
+            'Gln': '#800080', // Purple
+            'Asn': '#008080', // Teal
+            'Lys': '#8A2BE2', // BlueViolet
+            'Asp': '#FF4500', // OrangeRed
+            'Glu': '#8B0000', // DarkRed
+            'Ile': '#000080', // Navy
+            'Arg': '#0000FF', // Blue
+            'Thr': '#FF6347', // Tomato
+            'STOP': '#FF0000' // Red
         };
         return colors[aa] || '#808080';
     }
