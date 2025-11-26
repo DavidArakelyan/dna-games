@@ -125,29 +125,30 @@
                         </div>
 
                         <!-- Ribosome Container -->
-                        <div id="ribosome" class="ribosome">
-                            <div class="ribosome-large">
-                                <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 20px; justify-content: center;">
+                            <div id="ribosome" class="ribosome">
+                                <div class="ribosome-large">
                                     <div class="ribosome-sites">
                                         <div class="site site-e" id="site-e">E</div>
                                         <div class="site site-p" id="site-p">P</div>
                                         <div class="site site-a" id="site-a">A</div>
                                     </div>
-                                    <!-- Entrance Arrow (outside ribosome) -->
-                                    <div class="entrance-arrow"
-                                        style="font-size: 3rem; color: #c71585; font-weight: bold;">→</div>
+                                    <div class="ribosome-label">Large Subunit</div>
                                 </div>
-                                <div class="ribosome-label">Large Subunit</div>
+
+                                <!-- mRNA passes between subunits -->
+                                <div class="mrna-track">
+                                    <div class="nucleotide-container" id="mrna-display">
+                                        <!-- mRNA Codons will be displayed here -->
+                                    </div>
+                                </div>
+
+                                <div class="ribosome-small">Ribosome (Small Subunit)</div>
                             </div>
 
-                            <!-- mRNA passes between subunits -->
-                            <div class="mrna-track">
-                                <div class="nucleotide-container" id="mrna-display">
-                                    <!-- mRNA Codons will be displayed here -->
-                                </div>
-                            </div>
-
-                            <div class="ribosome-small">Ribosome (Small Subunit)</div>
+                            <!-- Entrance Arrow (outside ribosome, pointing left) -->
+                            <div class="entrance-arrow"
+                                style="font-size: 4rem; color: #c71585; font-weight: bold; margin-left: 20px;">←</div>
                         </div>
 
                         <!-- tRNA Depot -->
