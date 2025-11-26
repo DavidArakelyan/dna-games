@@ -6,56 +6,186 @@
     <title>Protein Synthesis Game</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=Courier+Prime:wght@400;700&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
-    <div class="game-container">
-        <header>
+    <div class="comic-book-container">
+        <header class="comic-header">
             <h1>Protein Synthesis</h1>
             <div class="score-board">
-                <span>Phase: <span id="phase">Transcription</span></span>
+                <span>Phase: <span id="phase">Intro</span></span>
                 <span>Score: <span id="score">0</span></span>
+                <span>Mistakes: <span id="mistakes">0</span></span>
             </div>
             <a href="/" class="back-btn">Back to Menu</a>
         </header>
 
-        <div class="game-area">
-            <div id="transcription-area">
-                <h3>Transcription: DNA to mRNA</h3>
-                <div class="dna-strand" id="dna-template"></div>
-                <div class="dna-strand" id="mrna-strand"></div>
-            </div>
-
-            <div id="translation-area" class="hidden">
-                <h3>Translation: mRNA to Protein</h3>
-                <div class="dna-strand" id="mrna-display"></div>
-                <div class="protein-chain" id="protein-chain"></div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <div id="transcription-controls">
-                <p>Match RNA bases to the DNA template (A->U, T->A, C->G, G->C)</p>
-                <div class="nucleotide-pool">
-                    <div class="nucleotide A" draggable="true" data-base="A">A</div>
-                    <div class="nucleotide U" draggable="true" data-base="U">U</div>
-                    <div class="nucleotide C" draggable="true" data-base="C">C</div>
-                    <div class="nucleotide G" draggable="true" data-base="G">G</div>
+        <div class="comic-pages">
+            <!-- Page 1: Meet the Crew (Intro) -->
+            <div class="comic-page active" id="page-1">
+                <div class="panel">
+                    <h2>Meet the Protein Synthesis Crew!</h2>
+                    <div class="enzyme-grid">
+                        <div class="enzyme-card">
+                            <div class="visual-placeholder polymerase-visual">RNA Pol</div>
+                            <h3>RNA Polymerase</h3>
+                            <p>"The Transcriber!" I build the mRNA strand from the DNA template.</p>
+                        </div>
+                        <div class="enzyme-card">
+                            <div class="visual-placeholder mrna-visual">mRNA</div>
+                            <h3>mRNA</h3>
+                            <p>"The Messenger!" I carry the genetic code from the nucleus to the ribosome.</p>
+                        </div>
+                        <div class="enzyme-card">
+                            <div class="visual-placeholder ribosome-visual">
+                                <div class="ribo-large"></div>
+                                <div class="ribo-small"></div>
+                            </div>
+                            <h3>Ribosome</h3>
+                            <p>"The Factory!" I read the mRNA and build the protein chain.</p>
+                        </div>
+                        <div class="enzyme-card">
+                            <div class="visual-placeholder trna-visual">
+                                <div class="trna-shape"></div>
+                                <div class="aa-circle">AA</div>
+                            </div>
+                            <h3>tRNA & Amino Acid</h3>
+                            <p>"The Supplier!" I bring the correct Amino Acid to the Ribosome.</p>
+                        </div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="comic-btn next-btn" onclick="nextPage(2)">Start Transcription! &rarr;</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="translation-controls" class="hidden">
-                <p>Select the correct Amino Acid for the highlighted Codon</p>
-                <div class="amino-acid-pool" id="amino-pool">
-                    <!-- Amino acids will be populated here -->
+            <!-- Page 2: Transcription -->
+            <div class="comic-page" id="page-2">
+                <div class="panel game-panel">
+                    <h2>Phase 1: Transcription</h2>
+                    <div id="step-text-transcription" class="step-indicator">Step 1: Transcribe DNA to mRNA!</div>
+
+                    <div class="game-area" id="transcription-area">
+                        <div class="strand-row">
+                            <div class="strand-label">DNA Template</div>
+                            <div class="nucleotide-container" id="dna-template">
+                                <!-- DNA Nucleotides will be generated here -->
+                            </div>
+                        </div>
+
+                        <!-- RNA Polymerase Overlay (Visual) -->
+                        <div id="rna-polymerase" class="rna-polymerase hidden">
+                            <div class="polymerase-bubble">RNA Polymerase</div>
+                        </div>
+
+                        <div class="strand-row">
+                            <div class="strand-label">mRNA Strand</div>
+                            <div class="nucleotide-container" id="mrna-strand">
+                                <!-- mRNA Slots will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div id="transcription-controls">
+                            <div class="toolbox">
+                                <h3>RNA Nucleotide Pool</h3>
+                                <p>Match RNA bases to the DNA template (A->U, T->A, C->G, G->C)</p>
+                                <div class="nucleotide-pool" id="rna-pool">
+                                    <div class="nucleotide A" draggable="true" data-base="A">A</div>
+                                    <div class="nucleotide U" draggable="true" data-base="U">U</div>
+                                    <div class="nucleotide C" draggable="true" data-base="C">C</div>
+                                    <div class="nucleotide G" draggable="true" data-base="G">G</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button id="next-phase-btn" class="comic-btn hidden" onclick="goToTranslation()">Go to
+                                Translation &rarr;</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <button id="start-btn" class="btn">Start Synthesis</button>
-            <button id="next-phase-btn" class="btn hidden">Start Translation</button>
-            <button id="reset-btn" class="btn hidden">New Protein</button>
+            <!-- Page 3: Translation -->
+            <div class="comic-page" id="page-3">
+                <div class="panel game-panel">
+                    <h2>Phase 2: Translation</h2>
+                    <div id="step-text-translation" class="step-indicator">Step 2: Build the Protein!</div>
+
+                    <div class="game-area hidden" id="translation-area">
+                        <!-- Protein Chain (Moved to Top) -->
+                        <div class="strand-row">
+                            <div class="strand-label">Protein Chain</div>
+                            <div class="protein-chain" id="protein-chain">
+                                <!-- Amino Acids will be added here -->
+                            </div>
+                        </div>
+
+                        <!-- Ribosome Container -->
+                        <div id="ribosome" class="ribosome">
+                            <div class="ribosome-large">
+                                <div class="ribosome-sites">
+                                    <div class="site site-e" id="site-e">E</div>
+                                    <div class="site site-p" id="site-p">P</div>
+                                    <div class="site site-a" id="site-a">A</div>
+                                </div>
+                                <div class="ribosome-label">Large Subunit</div>
+                            </div>
+
+                            <!-- mRNA passes between subunits -->
+                            <div class="mrna-track">
+                                <div class="nucleotide-container" id="mrna-display">
+                                    <!-- mRNA Codons will be displayed here -->
+                                </div>
+                            </div>
+
+                            <div class="ribosome-small">Ribosome (Small Subunit)</div>
+                        </div>
+
+                        <!-- tRNA Depot -->
+                        <div class="trna-depot-box"
+                            style="border: 3px dashed #666; padding: 20px; margin-top: 30px; border-radius: 10px; background-color: rgba(255,255,255,0.5);">
+                            <h3 style="margin-top: 0; color: #444; text-align: center;">tRNA DEPOT</h3>
+                            <p style="text-align: center; font-size: 0.9rem; margin-bottom: 10px;">Drag the correct tRNA
+                                to the Ribosome!</p>
+                            <div class="trna-pool" id="trna-pool">
+                                <!-- tRNAs will be generated here -->
+                            </div>
+                        </div>
+
+                        <!-- Hint Section -->
+                        <div style="margin-top: 30px; text-align: center;">
+                            <button class="btn" id="hint-btn">Show Codon Wheel Hint</button>
+                        </div>
+
+                        <!-- Codon Wheel Hint (Hidden by default) -->
+                        <div class="codon-wheel-container hidden" id="codon-wheel"
+                            style="margin-top: 20px; text-align: center;">
+                            <img src="/images/codon-wheel.png" alt="Amino Acid Codon Wheel"
+                                style="max-width: 300px; border: 4px solid #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div id="translation-controls">
+                            <div class="toolbox">
+                                <h3>tRNA Depot</h3>
+                                <p>Drag the correct tRNA to the Ribosome!</p>
+                                <div class="trna-pool" id="trna-pool">
+                                    <!-- tRNA molecules will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            <button id="reset-btn" class="comic-btn hidden" onclick="location.reload()">New
+                                Protein</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="message-area" class="message hidden"></div>

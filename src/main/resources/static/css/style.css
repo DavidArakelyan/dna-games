@@ -589,6 +589,12 @@ h2 {
     color: #333;
 }
 
+.nucleotide.U {
+    background-color: #ffcc99;
+    border-color: #ff9933;
+    color: #333;
+}
+
 /* Primer */
 
 .slot {
@@ -716,4 +722,431 @@ h2 {
     /* Tighten gap for the grid look */
     align-items: flex-start;
     /* Ensure rows start from left */
+}
+
+/* --- Protein Synthesis Specifics --- */
+
+/* RNA Polymerase Visual */
+.rna-polymerase {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    /* Initial position */
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: left 0.5s ease;
+    z-index: 5;
+}
+
+.polymerase-bubble {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(100, 149, 237, 0.4);
+    /* CornflowerBlue transparent */
+    border: 3px dashed #4169e1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10px;
+    font-family: 'Bangers', cursive;
+    color: #000080;
+    font-size: 0.8rem;
+    box-shadow: 0 0 20px rgba(65, 105, 225, 0.5);
+}
+
+/* Ribosome Visual */
+.ribosome {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.ribosome-large {
+    width: 350px;
+    height: 150px;
+    background-color: #ffb6c1;
+    /* LightPink */
+    border: 4px solid #c71585;
+    /* MediumVioletRed */
+    border-radius: 50% 50% 10% 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: 'Bangers', cursive;
+    color: #8b008b;
+    z-index: 2;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding-top: 20px;
+}
+
+.ribosome-sites {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.site {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #c71585;
+    background-color: rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #c71585;
+    position: relative;
+}
+
+.site::after {
+    content: attr(id);
+    /* Fallback */
+    position: absolute;
+    bottom: -20px;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+.site-e::after {
+    content: 'Exit (E)';
+}
+
+.site-p::after {
+    content: 'Peptidyl (P)';
+}
+
+.site-a::after {
+    content: 'Aminoacyl (A)';
+}
+
+.ribosome-label {
+    margin-top: auto;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.ribosome-small {
+    width: 250px;
+    height: 80px;
+    background-color: #ff69b4;
+    /* HotPink */
+    border: 4px solid #c71585;
+    border-radius: 10% 10% 50% 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    color: #8b008b;
+    margin-top: 10px;
+    /* Gap for mRNA */
+    z-index: 2;
+}
+
+/* mRNA Track between subunits */
+.mrna-track {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    margin-top: -10px;
+    margin-bottom: -10px;
+    z-index: 1;
+    overflow: hidden;
+    /* Hide mRNA sliding out */
+    position: relative;
+}
+
+#mrna-display {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* tRNA Molecules */
+.trna-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.trna-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: grab;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.trna-container:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+
+.trna-body {
+    width: 50px;
+    height: 60px;
+    background-color: #9370db;
+    /* MediumPurple */
+    clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 70%, 0% 70%, 0% 20%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    position: relative;
+}
+
+/* Strand Rows (DNA/mRNA) */
+.strand-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    overflow-x: auto;
+    /* Allow scrolling if content overflows */
+    padding-bottom: 10px;
+    /* Space for scrollbar */
+    white-space: nowrap;
+}
+
+.strand-label {
+    width: 120px;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 20px;
+    flex-shrink: 0;
+    /* Don't shrink label */
+    position: sticky;
+    left: 0;
+    background-color: #f0f8ff;
+    /* Match bg to hide scroll */
+    z-index: 10;
+}
+
+.nucleotide-container {
+    display: flex;
+    gap: 5px;
+    padding-right: 20px;
+    /* End padding */
+}
+
+/* Anticodon Box at the bottom of tRNA */
+.anticodon-box {
+    width: 50px;
+    height: 20px;
+    background-color: #4b0082;
+    /* Indigo */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    font-size: 0.9rem;
+    border-radius: 0 0 5px 5px;
+    margin-top: -5px;
+    /* Connect to body, overlap slightly */
+    z-index: 1;
+    /* Below body visual but visible */
+}
+
+.amino-acid-ball {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: orange;
+    border: 2px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.7rem;
+    color: white;
+    margin-bottom: -5px;
+    z-index: 2;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Codon Grouping */
+.codon-group {
+    display: flex;
+    border: 2px dashed transparent;
+    padding: 2px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    margin: 0 2px;
+}
+
+.codon-group.active {
+    border-color: #ff0000;
+    background-color: #ffff00;
+    /* Bright Yellow */
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    z-index: 10;
+}
+
+/* Protein Chain */
+.protein-chain {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    min-height: 50px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    flex-wrap: wrap;
+}
+
+.peptide-bond {
+    width: 15px;
+    height: 4px;
+    background-color: #333;
+}
+
+/* Animations */
+@keyframes peptide-link {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.amino-acid-ball.linked {
+    animation: peptide-link 0.5s ease-out forwards;
+}
+
+/* --- Intro Page Visuals --- */
+.visual-placeholder {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 10px;
+    position: relative;
+}
+
+.polymerase-visual {
+    background-color: rgba(100, 149, 237, 0.4);
+    border: 3px dashed #4169e1;
+    border-radius: 50%;
+    font-family: 'Bangers', cursive;
+    color: #000080;
+}
+
+.mrna-visual {
+    background: repeating-linear-gradient(90deg, #ffcc99, #ffcc99 10px, #333 10px, #333 12px);
+    height: 20px;
+    width: 100%;
+    margin-top: 40px;
+    /* Center vertically in the 100px container */
+    border: 1px solid #333;
+}
+
+.ribosome-visual {
+    flex-direction: column;
+}
+
+.ribosome-visual .ribo-large {
+    width: 80px;
+    height: 40px;
+    background-color: #ffb6c1;
+    border: 2px solid #c71585;
+    border-radius: 50% 50% 10% 10%;
+}
+
+.ribosome-visual .ribo-small {
+    width: 60px;
+    height: 20px;
+    background-color: #ff69b4;
+    border: 2px solid #c71585;
+    border-radius: 10% 10% 50% 50%;
+    margin-top: -5px;
+}
+
+.trna-visual {
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.trna-shape {
+    width: 40px;
+    height: 50px;
+    background-color: #9370db;
+    clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 100%, 0% 100%, 0% 20%);
+    border: 2px solid #4b0082;
+    /* Border doesn't show well with clip-path, but background is fine */
+}
+
+.aa-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: orange;
+    border: 2px solid #333;
+    position: absolute;
+    top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* --- Transition Animation --- */
+.mrna-transition {
+    position: absolute;
+    z-index: 100;
+    transition: all 2s ease-in-out;
+}
+
+.mrna-strand-visual {
+    display: flex;
+    gap: 2px;
+}
+
+.mrna-nuc-mini {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #333;
+}
+
+.mrna-nuc-mini.A {
+    background-color: #ff6b6b;
+}
+
+.mrna-nuc-mini.U {
+    background-color: #ffcc99;
+}
+
+.mrna-nuc-mini.C {
+    background-color: #ffe66d;
+}
+
+.mrna-nuc-mini.G {
+    background-color: #1a535c;
 }
