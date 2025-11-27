@@ -284,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function startTranslation() {
         phaseDisplay.textContent = 'Translation';
         stepTextTranslation.textContent = 'Step 2: Drag tRNA to the A-Site!';
+        translationArea.classList.remove('hidden');
 
         mrnaDisplay.innerHTML = '';
         proteinChain.innerHTML = '';
