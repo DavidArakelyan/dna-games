@@ -71,10 +71,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Shuffle Toolbox
         shuffleToolbox();
 
+        // Cleanup Final State Artifacts
+        document.querySelectorAll('.final-bond-row').forEach(el => el.remove());
+        document.querySelectorAll('.separator-row').forEach(el => el.remove());
+        document.querySelectorAll('.new-strand-row').forEach(el => el.remove());
+
+        // Restore DOM Structure
+        if (!middleRow.parentNode) {
+            // If middleRow was removed, re-insert it
+            gameArea.insertBefore(middleRow, rowLagging);
+        }
+        // Ensure correct order: Leading -> Middle -> Lagging
+        gameArea.prepend(rowLeading);
+        rowLeading.after(middleRow);
+        middleRow.after(rowLagging);
+
         // Clear all strands
         leadingTemplate.innerHTML = '';
         laggingTemplate.innerHTML = '';
-        middleContainer.innerHTML = '';
+        // middleContainer.innerHTML = ''; // Redundant as we reset middleRow below
 
         // Reset Middle Row Style & Content
         middleRow.className = 'strand-row middle-row';

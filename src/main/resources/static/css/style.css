@@ -959,7 +959,7 @@ h2 {
     font-family: monospace;
     font-size: 0.9rem;
     border-radius: 0 0 5px 5px;
-    margin-top: -5px;
+    margin-top: -17px;
     /* Connect to body, overlap slightly */
     z-index: 1;
     /* Below body visual but visible */
@@ -1151,4 +1151,21 @@ h2 {
 
 .mrna-nuc-mini.G {
     background-color: #1a535c;
+}
+
+/* Transcription Scroll Container */
+.transcription-scroll-container {
+    overflow-x: auto;
+    width: 100%;
+    position: relative;
+    padding-bottom: 10px;
+    /* Space for scrollbar */
+}
+
+.transcription-content {
+    position: relative;
+    width: max-content;
+    min-width: 100%;
+    padding-right: 20px;
+    /* Right padding */
 }
