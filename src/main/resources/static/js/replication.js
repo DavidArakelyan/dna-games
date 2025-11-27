@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         currentStep = step;
-        nucleotidePool.style.display = 'none';
+        nucleotidePool.classList.add('hidden');
         const toolbox = document.getElementById('enzyme-toolbox');
         if (toolbox) toolbox.style.display = 'block';
 
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function runPolymeraseLeading() {
         document.getElementById('enzyme-toolbox').style.display = 'none';
-        nucleotidePool.style.display = 'flex';
+        nucleotidePool.classList.remove('hidden');
 
         // Focus View: Hide Lagging
         rowLagging.classList.add('hidden-row');
@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function runPolymeraseLagging() {
         document.getElementById('enzyme-toolbox').style.display = 'none';
-        nucleotidePool.style.display = 'flex';
+        nucleotidePool.classList.remove('hidden');
 
         // Focus View: Hide Leading, Show Lagging
         rowLeading.classList.add('hidden-row');
@@ -555,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (slotsLeft === 0) {
                 setTimeout(() => {
-                    nucleotidePool.style.display = 'none';
+                    nucleotidePool.classList.add('hidden');
                     if (strandType === 'leading') {
                         setStep(3); // To Lagging
                     } else {
