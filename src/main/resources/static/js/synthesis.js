@@ -388,10 +388,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Shuffle
-        const shuffled = neededAminos.sort(() => Math.random() - 0.5);
+        // Sort alphabetically by anticodon
+        const sorted = neededAminos.sort((a, b) => a.anticodon.localeCompare(b.anticodon));
 
-        shuffled.forEach(item => {
+        sorted.forEach(item => {
             const container = createTRNAElement(item);
             pool.appendChild(container);
         });
